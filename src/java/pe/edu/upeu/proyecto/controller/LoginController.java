@@ -10,13 +10,15 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import pe.edu.upeu.proyecto.dao.IUsuario;
+import pe.edu.upeu.proyecto.daoimpl.UsuarioDaoImpl;
 
 /**
  *
  * @author Josue Llontop
  */
 public class LoginController extends HttpServlet {
-
+private IUsuario iu = new UsuarioDaoImpl();
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -29,17 +31,13 @@ public class LoginController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet LoginController</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet LoginController at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+        PrintWriter out = response.getWriter();
+        String correo = request.getParameter("email");
+        String pass = request.getParameter("password");
+        if (iu.login(correo, pass)==1) {
+            response.sendRedirect("main.jsp");
+        }else{
+            response.sendRedirect("index.jsp");
         }
     }
 
